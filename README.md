@@ -25,7 +25,7 @@
 		return "redirect:/board/boardList";
 	}
 ```
-실제로 이 상태로 form 테스트를 해보면 파라미터값이 노출 되지않는다. (POST)
+실제로 이 상태로 form 값을 전송해보면 해보면 /board/boardList 페이지에 파라미터값이 노출 되지않는다. (POST)
 
 반대로 addAttribute를 사용하면 파라미터 값이 노출된다.(GET) 심지어 노출된 이후 새로고침을 해도 계속 노출되고 있는 것을 확인했다.
 
