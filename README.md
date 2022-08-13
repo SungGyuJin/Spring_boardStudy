@@ -2,7 +2,7 @@
 
 ***
 
-## 기초개념들
+## 0812
 
 * "addFlashAttribute"
 
@@ -38,6 +38,17 @@
 우리 눈에는 직접적으로 보이지는 않았지만 뒤에서는 뭔가가 진행이 되고 있다는 것을 확실히 깨달았다.
 
 아주 기초적인 개념이지만 게시판 복습을 하며 "아~ 이런이유로 이 함수가 쓰였구나." 를 다시 알게되었다.
+
+## 0813 오류 부분
+<img src="https://user-images.githubusercontent.com/79797179/184493546-e449c0fb-51cc-4611-b11f-ffbf01286956.png" width="30%">
+<img src="https://user-images.githubusercontent.com/79797179/184493545-f199c75b-0f47-4a48-8354-86028d491c65.png" width="80%">
+
+* EL표기시 날짜 값을 불러올떄 에러발생 -> DAO클래스의 멤버변수와 완전히 동일하게 써야하는것을 깜빡함.
+
+  (regdate -> regDate, updatedate -> updateDate)
+
+
+
 
 
 
