@@ -1,5 +1,7 @@
 package com.myboard.service;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +20,26 @@ public class BoardServiceTest{
 	@Autowired
 	private BoardService service;
 	
+//	@Test
+//	public void serviceBoardEnroll() {
+//
+//		BoardVO bvo = new BoardVO();
+//		
+//		bvo.setTitle("서비스 제목");
+//		bvo.setContent("서비스 내용");
+//		bvo.setWriter("서비스 작성자");
+//		
+//		service.boardEnroll(bvo);
+//		
+//	}
+	
+	
 	@Test
-	public void boarden() {
-
-		BoardVO bvo = new BoardVO();
+	public void serviceBoardList(){
 		
-		bvo.setTitle("서비스 제목");
-		bvo.setContent("서비스 내용");
-		bvo.setWriter("서비스 작성자");
+//		service.boardList();
 		
-		service.boardEnroll(bvo);
+		service.boardList().forEach(board -> log.info("" + board));
 		
 	}
 	

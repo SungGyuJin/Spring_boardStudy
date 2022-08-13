@@ -2,6 +2,7 @@ package com.myboard.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +22,17 @@ public class BoardController {
 	private BoardService service;
 
 	@GetMapping("/boardList")
-	public void boardListGET() {
-		System.out.println("리스트페이지 진입");
+	public void boardListGET(Model model) {
+		
+		System.out.println("목록 진입");
+		
+		model.addAttribute("list", service.boardList());
 	}
 	
 	@GetMapping("/boardEnroll")
 	public void boardEnroll() {
-		System.out.println("등록페이지 진입");
+		
+		System.out.println("등록 진입");
 	}
 	
 	@PostMapping("/boardEnroll")
@@ -41,5 +46,7 @@ public class BoardController {
 		
 		return "redirect:/board/boardList";
 	}
+	
+	
 	
 }

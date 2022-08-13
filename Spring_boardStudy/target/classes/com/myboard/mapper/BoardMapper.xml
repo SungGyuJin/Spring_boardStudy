@@ -4,10 +4,17 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.myboard.mapper.BoardMapper">
 
+	<!-- 게시판 등록 -->
 	<insert id="boardEnroll">
 		
 		insert into mine_board(title, content, writer) values (#{title}, #{content}, #{writer})
 		
 	</insert>
-		
+	
+	<!-- 게시판 목록 -->
+	<select id="boardList" resultType="com.myboard.model.BoardVO">
+	
+		select * from mine_board
+	
+	</select>
 </mapper>
