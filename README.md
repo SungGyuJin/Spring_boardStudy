@@ -51,10 +51,11 @@
 ***
 
 ## 0813 일지
-<img src="https://user-images.githubusercontent.com/79797179/184493546-e449c0fb-51cc-4611-b11f-ffbf01286956.png" width="30%">
-<img src="https://user-images.githubusercontent.com/79797179/184493545-f199c75b-0f47-4a48-8354-86028d491c65.png" width="80%">
 
 ### 오류해결
+
+<img src="https://user-images.githubusercontent.com/79797179/184493546-e449c0fb-51cc-4611-b11f-ffbf01286956.png" width="30%">
+<img src="https://user-images.githubusercontent.com/79797179/184493545-f199c75b-0f47-4a48-8354-86028d491c65.png" width="80%">
 
 * EL표기시 날짜 값을 불러올떄 에러발생 -> DAO클래스의 멤버변수와 완전히 동일하게 써야하는것을 깜빡함.
 
