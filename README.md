@@ -57,9 +57,37 @@
 <img src="https://user-images.githubusercontent.com/79797179/184493546-e449c0fb-51cc-4611-b11f-ffbf01286956.png" width="30%">
 <img src="https://user-images.githubusercontent.com/79797179/184493545-f199c75b-0f47-4a48-8354-86028d491c65.png" width="80%">
 
-* EL표기시 날짜 값을 불러올떄 에러발생 -> DAO클래스의 멤버변수와 완전히 동일하게 써야하는것을 깜빡함.
+* EL표기시 날짜 값을 불러올떄 오류발생 -> DAO클래스의 멤버변수와 완전히 동일하게 써야하는것을 깜빡함.
 
   (regdate -> regDate, updatedate -> updateDate)
+
+***
+
+## 0814 일지
+
+### 오류해결
+
+```
+<c:forEach items="${list}" var="li">
+	<tr>
+		<td><a href="/board/boardDetail?bno=${li.bno}"><c:out value="${li.bno}"/></a></td>
+		<td><c:out value="${li.title}"/></td>
+		<td><c:out value="${li.writer}"/></td>
+		<td><fmt:formatDate value="${li.regDate}" pattern="yyyy/MM/dd"/></td>
+		<td><fmt:formatDate value="${li.updateDate}" pattern="yyyy/MM/dd"/></td>
+	</tr>
+</c:forEach>
+```
+
+위 코드는 게시판에 등록된 글들을 조회할떄 썼던 코드이다. 오류가 없는 코드이다. 하지만 상세목록을 구현하는 도중에 오류가 발생했다. 오류의 아래와 같다.
+
+<img src="https://user-images.githubusercontent.com/79797179/184532963-dc29b2a1-4dd0-4797-8ca4-6e09a0d3c663.png">
+
+* 상세목록페이지는 List 형식이 아니기때문에 오류발생 -> <c:forEach>제거
+
+   (반대로 <c:forEach>문을 쓴다면 받아올 값을 List 형식으로 바꿔주기)
+
+
 
 
 
