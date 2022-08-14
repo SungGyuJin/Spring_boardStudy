@@ -47,6 +47,15 @@ public class BoardController {
 		return "redirect:/board/boardList";
 	}
 	
+	@GetMapping("/boardDetail")
+	public void boardDetailGET(Model model, int bno) {
+		
+		System.out.println("상세목록 진입");
+		
+		model.addAttribute("dList", service.boardDetailList(bno));
+		
+	}
+	
 	
 	
 }

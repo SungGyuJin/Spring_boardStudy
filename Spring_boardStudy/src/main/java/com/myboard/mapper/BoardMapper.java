@@ -12,7 +12,8 @@ public interface BoardMapper {
 	// 게시판 목록페이지
 	public List<BoardVO> boardList();
 	
-	
+	// 상세목록기능
+	public BoardVO boardDetailList(int bno);
 	
 	
 }

@@ -34,13 +34,21 @@ public class BoardServiceTest{
 //	}
 	
 	
-	@Test
-	public void serviceBoardList(){
-		
+//	@Test
+//	public void serviceBoardList(){
+//		
 //		service.boardList();
+//		
+//		service.boardList().forEach(board -> log.info("" + board));
+//		
+//	}
+	
+	@Test
+	public void detailLIst() {
 		
-		service.boardList().forEach(board -> log.info("" + board));
+		int bno = 2;
 		
+		log.info("상세리스트: " + service.boardDetailList(bno));
 	}
 	
 }

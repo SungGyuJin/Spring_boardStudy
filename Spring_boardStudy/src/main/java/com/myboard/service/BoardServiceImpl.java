@@ -27,5 +27,12 @@ public class BoardServiceImpl implements BoardService{
 
 		return mapper.boardList();
 	}
+
+	// 상세목록
+	@Override
+	public BoardVO boardDetailList(int bno) {
+			
+		return mapper.boardDetailList(bno);
+	}
 	
 }

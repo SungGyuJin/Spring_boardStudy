@@ -41,4 +41,12 @@ public class BoardMapperTest {
 //		}
 //	}
 	
+	@Test
+	public void detailList() {
+		
+		int bno = 1;
+		
+		mapper.boardDetailList(bno);
+	}
+	
 }

@@ -17,4 +17,11 @@
 		select * from mine_board
 	
 	</select>
+	
+	<!-- 상세목록 -->
+	<select id="boardDetailList" resultType="com.myboard.model.BoardVO">
+	
+		select * from mine_board where bno = #{bno}
+	
+	</select>
 </mapper>

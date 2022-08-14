@@ -11,19 +11,28 @@
   src="https://code.jquery.com/jquery-3.4.1.js"
   integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
   crossorigin="anonymous"></script>
+<style>
+	*{
+		margin: auto;
+	}
+	
+	table{
+		width: 80%;
+		text-align: center;
+	}
+</style>
 </head>
 <body>
 	<h1>목록페이지입니다.</h1>
 	<a href="/board/boardEnroll">게시판 등록페이지 이동</a>
 	
 	<div class="">
-			<table>
+			<table border="1">
 				<thead>
 					<tr>
 						<th class="bno">No</th>
 						<th class="title">제목</th>
 						<th class="writer">작성자</th>
-						<th class="writer">내용</th>
 						<th class="regdate">작성일</th>
 						<th class="updatedate">수정일</th>
 					</tr>
@@ -31,9 +40,8 @@
 				<tbody>
 					<c:forEach items="${list}" var="li">
 						<tr>
-							<td><c:out value="${li.bno}"/></td>
+							<td><a href="/board/boardDetail?bno=${li.bno}"><c:out value="${li.bno}"/></a></td>
 							<td><c:out value="${li.title}"/></td>
-							<td><c:out value="${li.content}"/></td>
 							<td><c:out value="${li.writer}"/></td>
 							<td><fmt:formatDate value="${li.regDate}" pattern="yyyy/MM/dd"/></td>
 							<td><fmt:formatDate value="${li.updateDate}" pattern="yyyy/MM/dd"/></td>
@@ -61,6 +69,8 @@
 				alert("등록완료.");
 			}
 		}
+	});e='hidden' name='bno' value='"+$(this).attr("href""'")
+		
 	});
 </script>
 </body>
