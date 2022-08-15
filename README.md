@@ -57,7 +57,7 @@
 <img src="https://user-images.githubusercontent.com/79797179/184493546-e449c0fb-51cc-4611-b11f-ffbf01286956.png" width="30%">
 <img src="https://user-images.githubusercontent.com/79797179/184493545-f199c75b-0f47-4a48-8354-86028d491c65.png" width="80%">
 
-* EL표기시 날짜 값을 불러올떄 오류발생 -> DAO클래스의 멤버변수와 완전히 동일하게 써야하는것을 깜빡함.
+* EL표기시 날짜 값을 불러올떄 오류발생 -> VO 클래스의 필드명과 완전히 동일하게 써야하는것을 깜빡함.
 
   (regdate -> regDate, updatedate -> updateDate)
 
@@ -87,7 +87,15 @@
 
    (반대로 <c:forEach>문을 쓴다면 받아올 값을 List 형식으로 바꿔주기)
 
+***
 
+0815 일지
+
+### 오류해결
+
+* 게시판 수정시 자꾸 null 값으로 등록이 되어버림 -> form 안의 각 name 값들을 VO 클래스의 필드명과 일치시켜줌.
+  
+  (항상 하는건데 가끔식 이런다.. 기본을 중요시하자 제발..)
 
 
 
