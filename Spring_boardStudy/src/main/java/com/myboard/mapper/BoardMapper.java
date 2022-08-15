@@ -15,5 +15,7 @@ public interface BoardMapper {
 	// 상세목록기능
 	public BoardVO boardDetailList(int bno);
 	
+	// 게시판 수정
+	public int boardModify(BoardVO board);
 	
 }

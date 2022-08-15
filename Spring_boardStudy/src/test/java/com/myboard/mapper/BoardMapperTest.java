@@ -1,12 +1,12 @@
 package com.myboard.mapper;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.myboard.model.BoardVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -41,12 +41,26 @@ public class BoardMapperTest {
 //		}
 //	}
 	
+//	@Test
+//	public void detailList() {
+//		
+//		int bno = 1;
+//		
+//		mapper.boardDetailList(bno);
+//	}
+	
 	@Test
-	public void detailList() {
+	public void modify() {
 		
-		int bno = 1;
+		BoardVO bvo = new BoardVO();
 		
-		mapper.boardDetailList(bno);
+		bvo.setBno(1);
+		bvo.setTitle("mapper 수정제목");
+		bvo.setContent("mapper 수정내용");
+		bvo.setWriter("mapper 수정글쓴");
+		
+		mapper.boardModify(bvo);
+		
 	}
 	
 }

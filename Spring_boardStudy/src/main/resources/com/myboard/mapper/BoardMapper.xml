@@ -24,4 +24,16 @@
 		select * from mine_board where bno = #{bno}
 	
 	</select>
+	
+	<!-- 게시판 수정 -->
+	<update id="boardModify">
+	
+		update mine_board set
+			title = #{title}
+			, content = #{content}
+			, writer = #{writer}
+			, updatedate = now()
+		where bno = #{bno}
+		
+	</update>
 </mapper>

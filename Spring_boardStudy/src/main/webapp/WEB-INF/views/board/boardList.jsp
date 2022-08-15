@@ -49,6 +49,9 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			<form id="moveForm" method="get">
+				
+			</form>
 	</div>
 	
 
@@ -68,10 +71,18 @@
 			if(result === 'enroll success'){
 				alert("등록완료.");
 			}
+			
+			if(result === 'modify success'){
+				alert("수정완료.");
+			}
 		}
-	});e='hidden' name='bno' value='"+$(this).attr("href""'")
 		
 	});
+	
+	
+	
+	
+	
 </script>
 </body>
 </html>

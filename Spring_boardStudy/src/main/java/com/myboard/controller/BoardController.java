@@ -56,6 +56,23 @@ public class BoardController {
 		
 	}
 	
+	@GetMapping("/boardModify")
+	public void boardModifyGET(Model model, int bno) {
+		
+		System.out.println("수정 진입");
+		
+		model.addAttribute("pageInfo", service.boardDetailList(bno));
+	}
 	
+	@PostMapping("/boardModify")
+	public String boardModifyPOST(BoardVO board, RedirectAttributes rttr) {
+		
+		service.boardModify(board);
+		
+		rttr.addFlashAttribute("result", "modify success");
+		
+		return "redirect:/board/boardList";
+	}
+		
 	
 }

@@ -43,12 +43,26 @@ public class BoardServiceTest{
 //		
 //	}
 	
+//	@Test
+//	public void detailLIst() {
+//		
+//		int bno = 2;
+//		
+//		log.info("상세리스트: " + service.boardDetailList(bno));
+//	}
+	
 	@Test
-	public void detailLIst() {
+	public void serviceModify() {
 		
-		int bno = 2;
+		BoardVO bvo = new BoardVO();
+
+		bvo.setBno(1);
+		bvo.setTitle("service 수정제목");
+		bvo.setContent("service 수정내용");
+		bvo.setWriter("service 수정글쓴");
 		
-		log.info("상세리스트: " + service.boardDetailList(bno));
+		service.boardModify(bvo);
+		
 	}
 	
 }
