@@ -73,6 +73,16 @@ public class BoardController {
 		
 		return "redirect:/board/boardList";
 	}
+	
+	@PostMapping("/boardDelete")
+	public String boardDeletePOST(int bno, RedirectAttributes rttr) {
+		
+		service.boardDelete(bno);
+		
+		rttr.addFlashAttribute("result", "delete success");
+		
+		return "redirect:/board/boardList";
+	}
 		
 	
 }

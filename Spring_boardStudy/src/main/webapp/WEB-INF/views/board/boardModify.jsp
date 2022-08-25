@@ -30,7 +30,12 @@
 		font-size: 25px;
 	}
 	.btn{
+		font-size: 35px;
 		cursor: pointer;
+		border: 3px solid grey;
+	}
+	.btn_option{
+		margin: 10px 0 0 0;
 	}
 	
 </style>
@@ -64,10 +69,12 @@
 	</div>
 	</form>	
 	
+	<div class="btn_option">
 		<a class="btn" id="list_btn">목록</a>
 		<a class="btn" id="modify_btn">수정완료</a>
 		<a class="btn" id="cancel_btn">취소</a>
-		
+		<a class="btn" id="delete_btn">삭제</a>
+	</div>
 	<form id="moveForm" action="/board/boardModify" method="get">
 		<input type="hidden" id="bno" name="bno" value="<c:out value='${pageInfo.bno}'/>">
 	</form>
@@ -97,6 +104,16 @@
 		moveForm.attr("action", "/board/boardDetail");
 		moveForm.submit();
 	});
+	
+	// 버튼 (삭제)
+	$("#delete_btn").on("click", function(e){
+		
+		moveForm.attr("method", "POST");
+		moveForm.attr("action", "/board/boardDelete");
+		moveForm.submit();
+		
+	});
+	
 	
 	
 	

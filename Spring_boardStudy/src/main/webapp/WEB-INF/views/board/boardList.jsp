@@ -38,9 +38,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${list}" var="li">
+					<c:forEach items="${list}" var="li" varStatus="count">
 						<tr>
-							<td><a href="/board/boardDetail?bno=${li.bno}"><c:out value="${li.bno}"/></a></td>
+							<td><a href="/board/boardDetail?bno=${li.bno}"><%-- <c:out value="${li.bno}"/> --%>${count.count}</a></td>
 							<td><c:out value="${li.title}"/></td>
 							<td><c:out value="${li.writer}"/></td>
 							<td><fmt:formatDate value="${li.regDate}" pattern="yyyy/MM/dd"/></td>
@@ -56,6 +56,7 @@
 	
 
 <script>
+
 	$(document).ready(function(){
 		
 		let result = "<c:out value='${result}'/>";
@@ -75,13 +76,13 @@
 			if(result === 'modify success'){
 				alert("수정완료.");
 			}
+			
+			if(result === 'delete success'){
+				alert("삭제완료.");
+			}
 		}
 		
 	});
-	
-	
-	
-	
 	
 </script>
 </body>

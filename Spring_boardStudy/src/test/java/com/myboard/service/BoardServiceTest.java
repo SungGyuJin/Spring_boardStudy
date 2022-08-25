@@ -51,18 +51,25 @@ public class BoardServiceTest{
 //		log.info("상세리스트: " + service.boardDetailList(bno));
 //	}
 	
+//	@Test
+//	public void serviceModify() {
+//		
+//		BoardVO bvo = new BoardVO();
+//
+//		bvo.setBno(1);
+//		bvo.setTitle("service 수정제목");
+//		bvo.setContent("service 수정내용");
+//		bvo.setWriter("service 수정글쓴");
+//		
+//		service.boardModify(bvo);
+//		
+//	}
+	
 	@Test
-	public void serviceModify() {
+	public void delete() {
+		int bno = 3;
 		
-		BoardVO bvo = new BoardVO();
-
-		bvo.setBno(1);
-		bvo.setTitle("service 수정제목");
-		bvo.setContent("service 수정내용");
-		bvo.setWriter("service 수정글쓴");
-		
-		service.boardModify(bvo);
-		
+		service.boardDelete(bno);
 	}
 	
 }

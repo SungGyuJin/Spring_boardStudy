@@ -36,4 +36,19 @@
 		where bno = #{bno}
 		
 	</update>
+	
+	<!-- 삭제 -->
+	<delete id="boardDelete">
+		delete from mine_board where bno = #{bno}
+	</delete>
+	
+	<!-- 페이징처리 -->
+	<select id="boardListPage" resultType="com.myboard.model.BoardVO">
+	
+		select * from mine_board
+		order by bno desc
+		limit #{pageNum}, #{amount}
+	
+	</select>
+	
 </mapper>

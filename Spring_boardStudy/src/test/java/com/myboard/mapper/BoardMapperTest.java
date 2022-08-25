@@ -1,12 +1,14 @@
 package com.myboard.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.myboard.model.BoardVO;
+import com.myboard.model.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -49,18 +51,37 @@ public class BoardMapperTest {
 //		mapper.boardDetailList(bno);
 //	}
 	
+//	@Test
+//	public void modify() {
+//		
+//		BoardVO bvo = new BoardVO();
+//		
+//		bvo.setBno(1);
+//		bvo.setTitle("mapper 수정제목");
+//		bvo.setContent("mapper 수정내용");
+//		bvo.setWriter("mapper 수정글쓴");
+//		
+//		mapper.boardModify(bvo);
+//		
+//	}
+	
+//	@Test
+//	public void delete() {
+//		
+//		int bno = 4;
+//		
+//		mapper.boardDelete(bno);
+//	}
+	
 	@Test
-	public void modify() {
+	public void testListPage() {
 		
-		BoardVO bvo = new BoardVO();
+		Criteria cri = new Criteria();
 		
-		bvo.setBno(1);
-		bvo.setTitle("mapper 수정제목");
-		bvo.setContent("mapper 수정내용");
-		bvo.setWriter("mapper 수정글쓴");
+		List list = mapper.boardListPage(cri);
 		
-		mapper.boardModify(bvo);
-		
+		list.forEach(board -> log.info("" + board));
 	}
+	
 	
 }
