@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.myboard.model.BoardVO;
+import com.myboard.model.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -65,11 +66,29 @@ public class BoardServiceTest{
 //		
 //	}
 	
-	@Test
-	public void delete() {
-		int bno = 3;
-		
-		service.boardDelete(bno);
-	}
+//	@Test
+//	public void delete() {
+//		int bno = 3;
+//		
+//		service.boardDelete(bno);
+//	}
 	
+	
+//	@Test
+//	public void total() {
+//		
+//		service.listTotal();
+//	}
+	
+	@Test
+	public void testListPage() {
+		
+		Criteria cri = new Criteria();
+		
+		List list = service.boardListPage(cri);
+		
+		list.forEach(board -> log.info("" + board));
+		
+		System.out.println("Service Tests");
+	}
 }

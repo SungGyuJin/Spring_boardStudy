@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.myboard.model.BoardVO;
+import com.myboard.model.Criteria;
+import com.myboard.model.PageDTO;
 import com.myboard.service.BoardService;
 
 import lombok.extern.log4j.Log4j;
@@ -22,11 +24,16 @@ public class BoardController {
 	private BoardService service;
 
 	@GetMapping("/boardList")
-	public void boardListGET(Model model) {
+	public void boardListGET(Model model, Criteria cri) {
 		
 		System.out.println("목록 진입");
 		
-		model.addAttribute("list", service.boardList());
+		model.addAttribute("list", service.boardListPage(cri));
+		
+		PageDTO pMaker = new PageDTO(cri, service.listTotal());
+		
+		model.addAttribute("pMaker", pMaker);
+		
 	}
 	
 	@GetMapping("/boardEnroll")

@@ -20,6 +20,21 @@
 		width: 80%;
 		text-align: center;
 	}
+	.pageInfo{
+      	list-style : none;
+      	display: inline-block;
+    	margin: 50px 0 0 100px;      
+ 	}
+  	.pageInfo li{
+     	float: left;
+   	 	font-size: 20px;
+   		margin-left: 18px;
+   		padding: 7px;
+   		font-weight: 500;
+  	}
+	a:link {color:black; text-decoration: none;}
+	a:visited {color:black; text-decoration: none;}
+ a:hover {color:black; text-decoration: underline;}
 </style>
 </head>
 <body>
@@ -38,9 +53,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${list}" var="li" varStatus="count">
+					<c:forEach items="${list}" var="li">
 						<tr>
-							<td><a href="/board/boardDetail?bno=${li.bno}"><%-- <c:out value="${li.bno}"/> --%>${count.count}</a></td>
+							<td><a href="/board/boardDetail?bno=${li.bno}"><c:out value="${li.bno}"/></a></td>
 							<td><c:out value="${li.title}"/></td>
 							<td><c:out value="${li.writer}"/></td>
 							<td><fmt:formatDate value="${li.regDate}" pattern="yyyy/MM/dd"/></td>
@@ -49,8 +64,26 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			
+			<div class="pageBtn">
+				<div class="pageInfo">
+					<ul id="page_ul" class="pageInfo">
+						<c:if test="${pMaker.prev}">
+							<li class="pageInfo_btn prev"><a href="${pMaker.startPage - 1}">이전</a></li>
+						</c:if>
+						<c:forEach var="num" begin="${pMaker.startPage}" end="${pMaker.endPage}">
+							<li class="pageInfo_btn num"><a href="${num}">${num}</a></li>
+						</c:forEach>
+						<c:if test="${pMaker.next}">
+							<li class="pageInfo_btn next"><a href="${pMaker.endPage + 1}">다음</a></li>
+						</c:if>
+					</ul>
+				</div>
+			</div>
+			
 			<form id="moveForm" method="get">
-				
+				<input type="text" name="pageNum" value="${pMaker.cri.pageNum}" readonly="readonly">
+				<input type="text" name="amount" value="${pMaker.cri.amount}" readonly="readonly">
 			</form>
 	</div>
 	
@@ -81,6 +114,18 @@
 				alert("삭제완료.");
 			}
 		}
+		
+	});
+	
+	let moveForm = $("#moveForm");
+	
+	$(".pageInfo a").on("click", function(e){
+		
+		e.preventDefault();
+		
+		moveForm.find("input[name=pageNum]").val($(this).attr("href"));
+		moveForm.attr("action", "/board/boardList");
+		moveForm.submit();
 		
 	});
 	

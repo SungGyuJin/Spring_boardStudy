@@ -81,7 +81,7 @@ public class BoardMapperTest {
 		List list = mapper.boardListPage(cri);
 		
 		list.forEach(board -> log.info("" + board));
+		
+		System.out.println("Mapper Tests");
 	}
-	
-	
 }
