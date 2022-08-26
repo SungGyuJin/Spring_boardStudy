@@ -20,7 +20,7 @@
 
 다음 코드들을 살펴보자.
 
-```
+```java
 @PostMapping("/boardEnroll")
 
 	public String boardEnrollPOST(BoardVO bvo, RedirectAttributes rttr) {
@@ -67,7 +67,7 @@
 
 ### 오류해결
 
-```
+```java
 <c:forEach items="${list}" var="li">
 	<tr>
 		<td><a href="/board/boardDetail?bno=${li.bno}"><c:out value="${li.bno}"/></a></td>
@@ -104,6 +104,186 @@
 ### 느낀점
 
 게시판구현은 어느정도 할 수 있겠는데 아직 페이징 처리에 대한 이해도가 부족한거 같다. 많은 목록부분을 구현하는 모든 부분에서 절대로 배제 할 수 없는 개념이다. 빠른 시일내에 페이징개념을 마스터한 후 다시 readme를 쓰겠다!
+
+***
+
+0826 일지
+
+### 개념복습 페이징 처리
+
+어제는 개념 20%정도 이해를 했다면 오늘은 90% 이상 페이징원리를 이해했다.
+
+* Criteria class 일부 (아래)
+
+```java
+
+private int pageNum;	// 현재페이지
+	
+private int amount;	// 한 페이지당 보여질 데이터 갯수
+	
+private int limitValue;	// limit 첫 번째 값, 세팅
+	
+// 초기 페이지 세팅
+public Criteria() {
+    this.pageNum = 1;
+    this.amount = 10;
+}
+	
+public Criteria(int pageNum, int amount) {
+    this.pageNum = pageNum;
+    this.amount = amount;
+    this.limitValue = (pageNum - 1) * amount;
+}
+	
+public void setPageNum(int pageNum) {
+    this.limitValue = (pageNum - 1) * amount;
+    this.pageNum = pageNum;
+}
+```
+
+* PageDTO 일부 (아래)
+
+```java
+
+private int startPage;		// 시작페이지 번호
+private int endPage;		// 마지막페이지 번호
+private int total;		// 게시글 총 갯수
+private boolean prev, next;	// 이전, 다음 버튼
+private Criteria cri;		
+
+public Criteria getCri() {
+    return cri;
+}
+
+/* 생성자 */
+public PageDTO(Criteria cri, int total) {
+
+    this.cri = cri;
+    this.total = total;
+
+    // 마지막페이지번호 구하는 공식
+    this.endPage = (int) (Math.ceil(cri.getPageNum() / 10.0)) * 10;
+    
+    // 시작페이지번호 구하는 공식
+    this.startPage = this.endPage - 9;
+    
+    // 게시글이 끝나는 진짜 마지막 번호 구하는 공식
+    int realEnd = (int) (Math.ceil(total / cri.getAmount()));
+
+    if (realEnd < this.endPage) {
+        this.endPage = realEnd;
+    }
+
+    this.prev = this.startPage > 1;
+
+    this.next = this.endPage < realEnd;
+
+}
+```
+
+* 우선은 MySQL의 limit 방식을 선택.
+
+* Criteria를 1페이지로 세팅.
+
+* 쿼리문은 총 2개 필요 (게시글 총 갯수 쿼리, limit을 이용한 페이징 쿼리)
+
+* 시작페이지번호, 끝페이지번호, 다음, 이전 등 페이징처리에 필요한 모든 변수선언.
+
+### 코드리뷰
+
+```java
+this.endPage = (int) (Math.ceil(cri.getPageNum() / 10.0)) * 10;
+```
+
+(한 페이지에 10개의 게시글이 나오는, 버튼이 총 10개가 보인다고 가정 ex 1 2  ~ ~ 9 10)
+
+마지막페이지번호를 구하는 공식이다. 여기서 주의할 점이 하나 있는데, 여기서 말하는 마지막 페이지 번호는 실제 게시글이 끝나는 번호가 아니다. (실제 게시글이 끝나는 번호와 마지막페이지 
+번호가 동일 할 수는 있음) 
+
+1 ~ 10의 버튼이 보이는 화면은 마지막 번호가 10,
+
+11 ~ 20의 버튼이 보이는 화면은 마지막번호가 20, 
+
+21 ~ 30의 버튼이 보이는 화면은 마지막번호가 30 이 마지막 번호를 말하는 것이다. 
+
+즉, 저 공식에 의해 endPage의 값이 10이 나왔다면 "아~ 현재 페이지번호는 1에서 10중 하나겠구나"
+
+endPage의 값이 20 이 나왔다면 "아~ 현재 페이지번호는 11에서 20중 하나겠구나" 라고 이해하면 된다.
+
+이 값을 구하는것은 실제 시작페이지를 구하기 위한 첫번째 단계이다.
+
+다음 코드를 보자.
+
+```java
+this.startPage = this.endPage - 9;
+```
+
+전체적인 코드를 봤을때 endPage의 값은 10의 배수외에는 절대로 나올 수가 없다. (버튼이 10개보인다는 가정하에)
+
+그렇다면 자동적으로 
+
+* 1 ~ 10의 시작페이지는 10 - 9 = 1 페이지시작
+* 11 ~ 20의 시작페이지는 20 - 9 = 11 페이지시작
+* 21 ~ 30의 시작페이지는 30 - 9 = 21 페이지시작
+
+이렇게 이해하면 된다.
+
+```java
+int realEnd = (int) (Math.ceil(total / cri.getAmount()));
+if (realEnd < this.endPage) {
+    this.endPage = realEnd;
+}
+```
+
+위 코드는 게시글이 끝나는 진짜 마지막페이지 번호를 구하는 것이다. 중요한 점은 게시글 총 갯수 쿼리를 미리 구해놓아야한다. 
+
+예를 들어 게시글 총 갯수가 37개라면 끝페이지 번호는 10으로 볼 수 있다.
+
+* Math.ceil(37 / 10) >> Math.ceil(3.7) >> realEnd = 4가 되는것이다.
+
+그런데 10페이지 보다도 한참 적다. 무려 6페이지나 공백상태가 될 것이다. 이러한 경우에는 endPage가 그대로 10이 되도록 냅 둘수 없다.
+
+이떄 if문으로 들어가는 것이다. 
+
+endPage값은 10이 나왔지만 게시글이 거기에 한참 못미치기 때문에 게시글이 끝나는 진짜 페이지번호 realEnd 값(4)를 endPage에 대입해주는 것이다.
+
+즉, 진짜 마지막페이지의 번호는 4이고, 4번 페이지의 게시글 갯수는 총 7개가 등록되어 있을 것이다.
+
+```java 
+this.prev = this.startPage > 1;
+this.next = this.endPage < realEnd;
+```
+
+마지막으로 이전, 다음 버튼 유무 코드이다.
+
+* this.prev 
+
+startPage 역시 10개 버튼기준으로 1, 11, 21, 31 이렇게 된다. 즉, 다시 말해 1 보다 크면 11, 21, 31 등 1 ~ 10 을 벗어난 페이지 번호들을 말한다. 
+
+예를 들어 13페이지가 현재 번호이면 당연히 1 ~ 10 있다는 이야기가 되니까 이전버튼은 존재해야한다.
+
+그러므로 1이상의 startPage의 값은 prev의 값이 true를 가지게 되는 것이다.(이전표시가 보이게됨)
+
+* this.next
+
+다음 버튼역시 간단하다. 앞서 설명한 바와 같이 endPage의 값은 절대 10, 20 30 등 이 외엔 나올 수가 없다.
+
+하지만 realEnd의 값은 12, 38, 192 등 게시글이 몇개가 등록이 됐는지에 따라 어떤 값이든 올 수 있다.
+
+예를 들어 endPage의값이 현재 10이라 가정하고 realEnd 값이 endPage보다 크다는 소리는 게시글이 10페이지를 넘겼다고 생각하면 된다.
+
+언제끝나는 지는 몰라도 최소한 10 페이지는 넘어간다고 보면된다.
+
+반대로 realEnd값이 endPage 값보다 작다면 endPage의 고정 값(10, 20, 30 등)보단는 작다는 소리다.
+
+다시말해 endPage를 못넘겼기 때문에 다음버튼 또한 당연히 존재하지 않는다. (this.next의 값은 false)
+
+> 뭔가 중구난방식으로 썼지만 오늘 하루 최대한 페이징처리에 대한 이해를 바탕으로 복습겸 작성을 해보았다. view까지도 현재 구현한 상태지만 조금 더 정리해서 view개념도 readme에 작성 할 계획이다.
+
+***
+
+  
+
 
 
 
