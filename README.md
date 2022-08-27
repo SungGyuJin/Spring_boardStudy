@@ -109,7 +109,7 @@
 
 0826 일지
 
-### 개념복습 페이징 처리
+### 개념복습 페이징 처리_1
 
 어제는 개념 20%정도 이해를 했다면 오늘은 90% 이상 페이징원리를 이해했다.
 
@@ -281,6 +281,119 @@ startPage 역시 10개 버튼기준으로 1, 11, 21, 31 이렇게 된다. 즉, �
 > 뭔가 중구난방식으로 썼지만 오늘 하루 최대한 페이징처리에 대한 이해를 바탕으로 복습겸 작성을 해보았다. view까지도 현재 구현한 상태지만 조금 더 정리해서 view개념도 readme에 작성 할 계획이다.
 
 ***
+
+0827 일지
+
+### 개념복습 페이징 처리_2
+
+
+* Controller 일부 (아래)
+```java
+@Autowired private BoardService service;
+
+@GetMapping("/boardList")
+public void boardListGET(Model model, Criteria cri) {
+		
+    model.addAttribute("list", service.boardListPage(cri));
+		
+    model.addAttribute("pMaker", new PageDTO(cri, service.listTotal()));
+}
+```
+
+* View 일부 (/board/boardList) (아래)
+
+```java
+// 버튼 구현부
+<c:if test="${pMaker.prev}">
+    <li class="pageInfo_btn prev">
+        <a href="${pMaker.startPage - 1}">이전</a>
+    </li>
+</c:if>
+<c:forEach var="num" begin="${pMaker.startPage}" end="${pMaker.endPage}">
+    <li class="pageInfo_btn ${pMaker.cri.pageNum == num ? "active":"" }"><a href="${num}">${num}</a></li>
+</c:forEach>
+<c:if test="${pMaker.next}">
+    <li class="pageInfo_btn next">
+        <a href="${pMaker.endPage + 1}">다음</a>
+    </li>
+</c:if>
+
+// 버튼 이동을 도울 form 태그
+<form id="moveForm" method="get">
+    <input type="hidden" name="pageNum" value="${pMaker.cri.pageNum}">
+    <input type="hidden" name="amount" value="${pMaker.cri.amount}">
+</form>
+
+<script>
+    let moveForm = $("#moveForm");
+
+    $("#page_ul a").on("click", function(e) {
+
+    e.preventDefault();
+
+    moveForm.find("input[name=pageNum]").val($(this).attr("href"));
+    moveForm.attr("action", "/board/boardList");
+    moveForm.submit();
+
+    });
+</script>
+```
+
+먼저 <c:if>를 통하여 이전 버튼과 다음 버튼이 참인지 아닌지를 판별한다. 다시 말해 참이면 버튼이 등장, 거짓이면 버튼이 보이지 않는다. 여기까지는 이전에 알고 있던 개념이다. 
+
+이전 버튼에는 - 1을, 다음 버튼에는 + 1 을 하는 이유에 대해서 간략하게 알아보자.
+
+```java
+<a href="${pMaker.startPage - 1}">이전</a>
+<a href="${pMaker.endPage + 1}">다음</a>
+```
+
+0826 일지에서 설명한 바와같이 한 페이지에 게시글 10개를 보여주는 기준으로 잡았을때 
+
+startPage 값은 1, 11, 21, 31, 41 ..... 이렇게 밖에,
+
+endPage 값은 10, 20, 30, 40, 50 ..... 이렇게 밖에 올 수가 없다.
+
+예를들어 
+
+* 총 게시글 수가 10페이지를 훨씬 넘어감
+* 현재 페이지가 1 ~ 10에 있다고 가정 
+
+넘어가기로 마음 먹고 다음 버튼을 누르기 직전의 상태를 생각해보라.
+
+PageDTO class의 endPage값은 10으로 되어있다. 왜?
+
+```java
+this.endPage = (int) (Math.ceil(cri.getPageNum() / 10.0)) * 10;
+```
+위 공식에 의해서 말이다. 
+```java
+<a href="${pMaker.endPage + 1}">다음</a>
+```
+하지만 endPage의 값에 + 1을 해주면 완전히 다 바뀌게 된다. 이 코드만 봐서는 안되고 아래의 JS코드와 form 태그를 다시보자.
+```java
+<form id="moveForm" method="get">
+    <input type="hidden" name="pageNum" value="${pMaker.cri.pageNum}">
+    <input type="hidden" name="amount" value="${pMaker.cri.amount}">
+</form>
+
+moveForm.find("input[name=pageNum]").val($(this).attr("href"));
+```
+a태그를 클릭했을시 name값이 'pageNum'인 친구의 값을 찾아서 파라미터 값을 11을 줘라~ 이런 뜻이다.
+
+<img src="https://user-images.githubusercontent.com/79797179/187032232-b577f258-77e7-44ae-841a-79cd222d307c.png">
+<img src="https://user-images.githubusercontent.com/79797179/187032257-606eb563-fd59-438a-9596-93750e2ebc28.png">
+
+위의 이미지를 보시다시피 10페이지를넘어가기전 즉, 다음 버튼을 누르기전의 파라미터값과 다음버튼을 누르고 난 후의 파라미터 값이다. pageNum은 현재 선택된 페이지 번호를 의미한다. 저 파라미터값이 그대로 Criteria class의 멤버변수인 pageNum이 재세팅이 된다. 그리고 그것을 바탕으로 PageDTO class의 생성자 메서드를 이용해 버튼들 역시 재세팅이 되는 원리이다.
+
+이전 버튼 역시 같은 방법이다. 참고로 다음버튼을 + 1이 아닌 +2를 해주니까 11 ~ 20 페이지를 건너뛰고 시작페이지 번호가 21페이지가 되었고 아무 값도 더해주지 않았을때는 다음 버튼을 아무리 눌러도 10페이지에서 새로고침만 될 뿐이었다. 이전버튼 역시 같은 결과를 확인했다.
+
+> 페이징 처리가 처음에는 이게 대체 무슨 소린가.. 했던 그런 기억이 난다. 하지만 다시 보고 또 보고 직접 손으로 적어보고 계산해보고 하니 개념습득이 빨랐다. 혹시 또 모르니 미흡한 부분이 있다면 그 부분을 더 공부 할 것이다.
+
+***
+
+
+
 
   
 
