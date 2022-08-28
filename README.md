@@ -7,6 +7,16 @@
 * 오류 발생시 오류내용과 해결방법을 기록.
 * 날짜를 기록하며 일지형식으로 진행.
 
+*** 
+
+## 개발환경
+
+* Spring (Eclipse : Spring Tools 3)
+* JDK 1.8
+* Apache Tomcat 8.0
+* MySQL
+* MyBatis
+
 ***
 
 # 0812 일지
