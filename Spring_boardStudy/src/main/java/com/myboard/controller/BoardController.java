@@ -26,13 +26,17 @@ public class BoardController {
 	@GetMapping("/boardList")
 	public void boardListGET(Model model, Criteria cri) {
 		
-		System.out.println("목록 진입");
+//		model.addAttribute("list", service.boardListPage(cri));
+//		
+//		model.addAttribute("pMaker", new PageDTO(cri, service.listTotal()));
 		
 		model.addAttribute("list", service.boardListPage(cri));
 		
-		PageDTO pMaker = new PageDTO(cri, service.listTotal());
+		int total = service.listTotal(cri);
 		
-		model.addAttribute("pMaker", pMaker);
+		PageDTO pdto = new PageDTO(cri, total);
+		
+		model.addAttribute("pMaker", pdto);
 		
 	}
 	

@@ -26,6 +26,6 @@ public interface BoardMapper {
 	public List<BoardVO> boardListPage(Criteria cri);
 	
 	// 게시글 총 갯수
-	public int listTotal();
+	public int listTotal(Criteria cri);
 	
 }

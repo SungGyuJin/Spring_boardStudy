@@ -47,8 +47,15 @@
 	<!-- 페이징처리 -->
 	<select id="boardListPage" resultType="com.myboard.model.BoardVO">
 	
-		select * from mine_board
-		order by bno desc
+		select * from(
+			select bno, title, writer, regdate, updatedate
+			from mine_board
+			<if test="keyword != null">
+			
+				where title like concat('%', #{keyword}, '%')
+				
+			</if>
+			order by bno desc) as T1
 		limit #{limitValue}, #{amount}
 	
 	</select>
@@ -57,6 +64,13 @@
 	<select id="listTotal" resultType="int">
 	
 		select count(*) total from mine_board
+		
+			<if test="keyword != null">
+				
+				where title like concat('%', #{keyword}, '%')
+				
+			</if>
+		
 		
 	</select>
 	

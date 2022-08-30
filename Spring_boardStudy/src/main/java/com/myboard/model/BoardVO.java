@@ -25,5 +25,4 @@ public class BoardVO {
 	// 수정 날짜
 	private Date updateDate;
 
-	
 }

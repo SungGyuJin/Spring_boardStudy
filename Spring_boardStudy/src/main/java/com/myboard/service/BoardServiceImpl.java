@@ -48,7 +48,6 @@ public class BoardServiceImpl implements BoardService{
 		return mapper.boardDelete(bno);
 	}
 
-
 	@Override
 	public List<BoardVO> boardListPage(Criteria cri) {
 
@@ -56,9 +55,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int listTotal() {
-		
-		return mapper.listTotal();
+	public int listTotal(Criteria cri) {
+
+		return mapper.listTotal(cri);
 	}
 	
 }

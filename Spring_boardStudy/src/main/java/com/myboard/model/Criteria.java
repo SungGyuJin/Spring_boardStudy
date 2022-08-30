@@ -8,6 +8,8 @@ public class Criteria {
 	
 	private int limitValue;	// limit 첫 번째 값, 세팅
 	
+	private String keyword;
+	
 	// 초기 페이지 세팅
 	public Criteria() {
 		this.pageNum = 1;
@@ -48,11 +50,21 @@ public class Criteria {
 	public void setLimitValue(int limitValue) {
 		this.limitValue = limitValue;
 	}
+	
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 
 	@Override
 	public String toString() {
-		return "Criteria [pageNum=" + pageNum + ", amount=" + amount + ", limitValue=" + limitValue + "]";
+		return "Criteria [pageNum=" + pageNum + ", amount=" + amount + ", limitValue=" + limitValue + ", keyword="
+				+ keyword + "]";
 	}
+
 	
 	
 }
