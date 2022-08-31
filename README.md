@@ -481,7 +481,7 @@ return "redirect:/board/boardList";
 
 오늘은 사정상 스케쥴이 많아서 공부를 많이 못했다. crud중에서 조회부분에서 또 막히는 현상이 나타났다. 너무나도 간단한 개념인데..
 
-아래의 interface 부분의 코드를 보자. (DAT: BoardVO)
+아래의 interface 부분의 코드를 보자. (DAO: BoardVO)
 
 ```java
 // 게시판 조회
