@@ -33,16 +33,16 @@
 ```java
 @PostMapping("/boardEnroll")
 
-	public String boardEnrollPOST(BoardVO bvo, RedirectAttributes rttr) {
+public String boardEnrollPOST(BoardVO bvo, RedirectAttributes rttr) {
   
-		log.info("BoardVO : " + bvo);
+    log.info("BoardVO : " + bvo);
 		
-		service.boardEnroll(bvo);
+    service.boardEnroll(bvo);
 		
-		rttr.addFlashAttribute("result", "enroll success");
+    rttr.addFlashAttribute("result", "enroll success");
 		
-		return "redirect:/board/boardList";
-	}
+    return "redirect:/board/boardList";
+}
 ```
 실제로 이 상태로 form 값을 전송해보면 해보면 /board/boardList 페이지에 파라미터값이 노출 되지않는다. (POST)
 
@@ -504,6 +504,136 @@ public List<BoardVO> listBoard();
 ## 중간점검 (현재까지의 개발과정에 대한 나의 생각)
 
 >뜬금없이 키워드가 중간점검이다. 음.. 뭔가 개발에 대한 이해, 개념 복습보다 쉬어가는 코너? 뭐 그런 취지에서 현재까지 나의 생각에 대해 적어보고 싶었고 또 앞으로 어떤 방향으로 나아갈지에 대한 생각을 글로써보려 한다. 우선 작년 6월 쯤 국비훈련과정을 시작으로 지금까지 왔다. 어렵기도하고 그만두고 싶기도했지만, 나이가 있으니까 다른거 섣불리 시작하기는 그렇고...라고 할 줄 알았는가? 하하하 물론 그만둬야하나 생각은 했지만 일단은 재미가 있었고 흥미가 있었기 때문에 지금 까지 올 수 있었고, 앞으로도 계속해서 이쪽계열로 나갈 생각이다. 우선 내가 먼저 해야할 것은 뭔가를 더 새로 배우고 이러기 보다는 가장 중요한 기본기 그리고 무언가를 새로 배울때 두려운 자세가 아닌 호기심을 가지는 자세가 필요할거 같다. 역시 말보다는 행동인가? 솔직히 말해서 깃허브 잔디 심는 재미때문에 시작한건데 이게 나도 사람인지라 코드가 잘 안쳐지고 피곤할때가 많이있다. 그래도 잔디를 심어야하니까 어거지로 했던게 그래도 몇 번 있었다(다른프로젝트 포함). 하지만 난 잔디를 심어야겠다는 그 마음때문에 컴퓨터앞에 앉고 작업 툴을 실행하면 또 마음이 바뀐다. 어떤 마음으로? 공부하고 싶단 마음으로 말이다. 나는 이 깃허브를 이용해 잔디 심는게 정말 큰 장점이라 한다. 물론 지금 이걸 쓰는 시간에도 너무나도 피곤하고 늦은 시간이지만 처음에는 어떤내용을 오늘 완료할까? 프로젝트는 코드를 친게 오늘은 많이 적어서 커밋할 내용은 없고(오늘 바빳음), 그러다 오늘 주제로 선택한 것이 중간점검의 일기형식의 주제였다. 역시 이 글을 쓰면서도 앞으로 어떤 마음가짐을 가져야할지 정리가 된다. 그렇다고 너무 자주 이러지는 않을거고 ㅎㅎ ... 잔디심는 재미로 readme를 작성하는 것이 아닌 개발자체에 대한 재미로 작성하는 그런 개발자가 되고싶다.
+
+# 0902 일지
+
+## CRUD 인터페이스
+
+우선 아래의 mapper interface의 코드를 보자.
+
+```java
+// 게시판 등록
+public void regBoard(BoardVO bvo);
+	
+// 게시판 목록
+public List<BoardVO> listBoard();
+	
+// 게시판 상세조회
+public BoardVO detailBoard(int bno);
+	
+// 게시판 수정
+public void modifyBoard(BoardVO bvo);
+	
+// 게시판 삭제
+public void deleteBoard(int bno);
+```
+
+1. 게시판 등록
+
+```java
+<!-- mapper 일부 : 등록 -->
+<insert id="regBoard">
+    insert into '테이블명' (title, content, writer) values (#{title}, #{content}, #{writer})
+</insert>
+```
+
+반환 값이 필요없다. 대신 매개변수가 존재한다. BoardVO 객체 즉, 다오객체를 매개 변수로 받는다.
+
+mapper.xml id값이 인터페이스 메서드명과 동일. (Controller 부분 생략)
+
+2. 게시판 조회
+```java
+<!-- mapper 일부 : 목록 -->
+<select id="listBoard" resultType="com.board.mapper.BoardVO">
+    select * from '테이블명'
+</select>
+```
+
+여러 게시글의 정보를 불러오기때문에 List형을 반환값으로 받는다. 왜? mapper를 이용해서 리스트만 넘겨주면된다. 
+
+매개변수도 필요없다. mapper의 쿼리문에 대한 결과만 있으면 리스트 값이 출력된다.
+
+### (주의) resultType의 경로 설정을 꼭 입력해주자.
+
+mapper.xml id값이 인터페이스 메서드명과 동일. (Controller 부분 생략)
+
+3. 게시판 상세조회
+
+```java
+<!-- mapper 일부 : 상세조회 -->
+<select id="listBoard" resultType="com.board.mapper.BoardVO">
+    select * from '테이블명' where bno = #{bno}
+</select>
+```
+
+조회개념과 비슷하다. 게시글 하나의 정보를 반환하는 상세조회이기때문에 List를 쓸 필요가 없다. BoardVO 객체를 반환값으로 만든다.
+
+또 한가지 추가되는 점은 매개변수다. 위 쿼리에서는 bno컬럼에 해당하는 글의 정보를 불러와야 하기 때문에 int bno를 파라미터로 받았다.
+
+### (주의) resultType의 경로 설정을 꼭 입력해주자.
+
+mapper.xml id값이 인터페이스 메서드명과 동일. (Controller 부분 생략)
+
+4. 게시판 수정
+
+```java
+<!-- mapper 일부 : 수정 -->
+<update id="boardModify">
+	
+    update '테이블명' set
+        title = #{title}
+        , content = #{content}
+        , writer = #{writer}
+        , updatedate = now()
+    where bno = #{bno}
+		
+</update>
+```
+
+수정역시 간단한다. DB의 값을 수정만 하면 되는 부분이다. 즉, select 처럼 뭔가를 보여주는 개념이 아니다. 
+
+그래서 역시 반환값을 void로 설정했다. 여기서 매개변수는 BoardVO 객체를 넣어줌으로서 수정을 마무리한다. 
+
+그런데 궁금한 점이 있을 수 있다. 수정을 하려면 수정 관련된 bno 값을 파라미터로 받아야 하지 않을까? 라고
+
+생각하겠지만 수정페이지 오기전 즉, view페이지(detailPage)에서 modifyPage로 넘어갈때 form안의 bno값을 
+
+넘겨줌으로써 인터페이스에서 또 매개변수(int bno)를 선언해줄 필요가 없는 것이다.
+
+mapper.xml id값이 인터페이스 메서드명과 동일. (Controller 부분 생략)
+
+5. 게시판 삭제
+
+```java
+<!-- mapper 일부 : 삭제 -->
+<delete id="boardDelete">
+	
+    delete from '테이블명' where bno = #{bno}
+		
+</delete>
+```
+
+드디어 마지막 삭제이다. 삭제 역시 간단하다. select처럼 출력해야하는 역할이 없기 때문에 반환 값 역시 void!
+
+등록처럼 DB에 값을 추가하는 개념 즉, DB에서의 변화만 일어나면 된다.
+
+대신 삭제에서는 DB값이 하나 사라진다는 차이뿐이다.
+
+해당 조건은 수정과 같이 bno로 결정한다. 
+
+modifyPage에서 구현한 삭제 태그를 클릭함으로 form을 이용해 해당 게시글의 bno 값을 전달한다. (삭제완료)
+
+mapper.xml id값이 인터페이스 메서드명과 동일. (Controller 부분 생략)
+
+> 처음에 CRUD를 구현할 때 무엇을 반환값으로 가지고 매개변수는 무엇을 넣어야 하는지.. 정말 헷갈렸던 기억이 난다. (각 동작에 해당하는 CRUD) 메서드의 동작원리만 이해 한다면 전혀 어렵지 않은 개념이라는 것이다. 그래도 이보다 훨씬 더 중요한 것은 알고 있다고 해서 방심하지 말고 개념에 대해서 꾸준히 복습하고 점검하는 습관이란것을 잊지말자. 
+
+***
+
+
+
+
+
+
 
 
 
