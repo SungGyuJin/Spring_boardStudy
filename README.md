@@ -673,18 +673,67 @@ interface를 구현하는데에 static를 사용할 수 없다는 단점도 있�
 
 작업할 수 있을 것이다.
 
+# 0912 일지
 
+## 스프링 개발환경 세팅
 
+### 1. pom.xml 수정
+   - <org.springframework-version>버전 수정 (ex 5.2.3)</org.springframework-version>
 
+### 2. Project Facets에서 자바 (JDK, 컴파일러) 버전 변경
+### 3. 이 후 왼쪽 네비목록에서 Java Compiler 도 앞의 버전과 같이 설정
+### 4. pom.xml 수정
+   - <java-verison>버전수정 (ex 1.8)</java-veriso>로 변경
+   - <plugin>안  그룹ID org.apache.maven.plugins의 버전과 소스 타겟 수정
+       ex) 버전은 3.5.1, 소스와 타겟은 자바버전과 같게 수정 ->  update mavaen project
+### 5. 라이브러리 추가
+ -롬복 jar 다운후 추가 (구글에서 롬복 다운 검색후 맨 위 링크) 
+ [pom.xml]에 있는 log4j 라이브러리 코드를 제거 혹은 주석 처리합니다.
+ "log4j", "spring-test" 라이브러리 코드를 추가합니다. (원하는 버전을 추가합니다.)
+"sprint- test" 경우 spring 버전과 동일하게 하기 위해 ${org.springframework-version}을 입력하였습니다.
+ "Junit"라이브러리 경우 기존 '4.7'버전에서 '4.12'버전으로 변경합니다.
 
+### 6.MySQL 설정하기
+ - 메이븐 추가 (이후 src/test/java에서  테스트 진행)
+### 7. HikariCP 설정 및 테스트
+### 8. root-context.xml 설정
+ -DataSource 설정 (bean 2개) 이후 테스트(@Runwidth)
+### 9. MyBatis 라이브러리 추가 및 SQLSessionFactory 설정
+ -mybatis
+ -mybatis-spring
+ -spring-jdbc  <versiont>${org.springframework}
+ -mybatis-tx  <versiont>${org.springframework}}
+### 10. SqlSessionFactory 설정 (root-context.xml) 후 테스트 (src/test/java)
+### 11. Log4jdbc-log4j2 라이브러리 추가 및 설정
+ - 라이브러리 추가
+- 로그설정파일 추
+  log4jdbc.spylogdelegator.name=net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
+- JDBC 연걸정보설정 (rootcontext.xml 변경)
+        - hikariConfig 위 두줄 주석 처리 후 2개 추가
+### 12. maven사이트에서 java servlet api 복사후 pom.xml 에서 version은  3.1.0으로 변경 
 
+### 13. 필수 패키지추가
+- 패키지명.패키지명.model : VO(value Object) 패키지입니다. 데이터 타입을 저장합니다.
+- 패키지명.패키지명.mapper : DAO(Data Access Object) 역할을 하는 패키지입니다. 데이터베이스 접속하
+                                  는 역할을 합니다.
+- 패키지명.패키지명.service :  Service 패키지입니다. Mapper와 Controller 사이를 연결해주는 역할입니다
+     
+root-context.xml 네임스페이스 추가 (context, mybatis-spring)
+다시 source 탭을 누른 후 아래 항목 추가
+    <mybatis-spring:scan base-package="com.vam.mapper"/>
+    <context:component-scan base-package="com.vam.model"></context:component-scan>
+    <context:component-scan base-package="com.vam.service"></context:component-scan>
 
+### 14. Mapper XML 저장경로 생성
+### 15. 톰캣연동
+### 16. 프로젝트 절대경로 설정(/) 구동 테스트 (Run Server) 
+### 17. 한글설정 2개
+ - 해당 프로젝트 Properties -> resources Other 선택하고 UTF-8
+ - (web.xml) 복사파일
 
+The end
 
-  
-
-
-
-
-
+> 지금까지 스프링 환경설정은 생략하고 진행하는 경우가 많았었다. 부트와 다르게 설정이 정말 복잡하고 할게 많다... 그래도 한번 메모해두면
+다음에도 도움이 될거 같아서 따로 세팅하는 부분만 작성해봤다. 전자정부 표준프레임워크가 거의 스프링과 동일하기 떄문에 세팅역시 중요하다.
+앞으로 무언가를 할때 한 부분만 중점적으로 공부하기 보단 "막히는 부분을 없애자" 라는 느낌으로 공부하면 실무에서도 큰 도움이 될 것이다.
 
