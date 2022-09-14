@@ -85,14 +85,12 @@ a:hover {
 				<c:forEach items="${list}" var="li">
 					<tr>
 						<td>
-							<a href="/board/boardDetail?bno=${li.bno}"><c:out value="${li.bno}" /></a>
+							<a href="/board/boardDetail?bno=${li.bno}"><c:out value="${li.bno}"/></a>
 						</td>
-						<td><c:out value="${li.title}" /></td>
-						<td><c:out value="${li.writer}" /></td>
-						<td><fmt:formatDate value="${li.regDate}"
-								pattern="yyyy/MM/dd" /></td>
-						<td><fmt:formatDate value="${li.updateDate}"
-								pattern="yyyy/MM/dd" /></td>
+						<td><c:out value="${li.title}"/></td>
+						<td><c:out value="${li.writer}"/></td>
+						<td><fmt:formatDate value="${li.regDate}" pattern="yyyy/MM/dd"/></td>
+						<td><fmt:formatDate value="${li.updateDate}" pattern="yyyy/MM/dd"/></td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -132,6 +130,7 @@ a:hover {
 		</form>
 	</div>
 
+	<a href="/main"><img src="/resources/css/img/theBook.png"></a>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
