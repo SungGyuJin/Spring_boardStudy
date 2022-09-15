@@ -37,6 +37,8 @@ public class BoardController {
 		PageDTO pdto = new PageDTO(cri, total);
 		
 		model.addAttribute("pMaker", pdto);
+		
+		
 	}
 	
 	@GetMapping("/boardEnroll")
